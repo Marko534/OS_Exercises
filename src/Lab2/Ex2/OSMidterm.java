@@ -2,6 +2,8 @@ package Lab2.Ex2;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 class OSMidterm {
@@ -35,9 +37,12 @@ class OSMidterm {
         //ONLY TESTING CODE, SO YOU CAN TAKE A LOOK OF THE OUTPUT YOU NEED TO GET AT THE END
         //YOU CAN COMMENT OR DELETE IT AFTER YOU WRITE THE CODE USING THREADS
         //-----------------------------------------------------------------------------------------
-        Concatenation concatenation = new Concatenation(matrix, statisticsResource);
-
-        concatenation.concatenate();
+//        Concatenation concatenation = new Concatenation(matrix, statisticsResource);
+        ArrayList<Thread> threads = new ArrayList<>();
+        for (int i =0; i< matrix.getM(); i++){
+            threads.add(new Concatenation());
+        }
+//        concatenation.concatenate();
 
         statisticsResource.printString();
         //-----------------------------------------------------------------------------------------
@@ -53,29 +58,35 @@ class OSMidterm {
     }
 
     // TODO: Make the Concatenation Class  a Thread Class
-    static class Concatenation {
+    static class Concatenation extends Thread {
 
-        private DataMatrix matrix;
-        private StatisticsResource statisticsResource;
-
-        public Concatenation(DataMatrix matrix, StatisticsResource statisticsResource) {
-            this.matrix = matrix;
-            this.statisticsResource = statisticsResource;
+//        private DataMatrix matrix;
+//        private StatisticsResource statisticsResource;
+        private ArrayList<Object> objects;
+        private String letters;
+        public Concatenation(Object[] line) {
+            this.objects = new ArrayList<>(List.of(line));
+            this.letters = "";
+            this.start();
         }
         //concatenation function implemented on the whole matrix, so you can take a look of the task's logic
-        public void concatenate() {
-            for (int i=0;i<this.matrix.getM();i++) {
-                for (int j=0;j<this.matrix.getN();j++) {
-                    if (this.matrix.isString(i,j)) {
-                        this.statisticsResource.concatenateString(this.matrix.getEl(i,j).toString());
-                    }
-                }
-            }
+//        public void concatenate() {
+//            for (int i=0;i<this.matrix.getM();i++) {
+//                for (int j=0;j<this.matrix.getN();j++) {
+//                    if (this.matrix.isString(i,j)) {
+//                        this.statisticsResource.concatenateString(this.matrix.getEl(i,j).toString());
+//                    }
+//                }
+//            }
+//        }
+
+        @Override
+        public void run() {
+            this.execute();
         }
 
         public void concatenate_by_row(){
-            //TODO: Implement this function
-            // add  arguments in the function if needed
+
         }
         public void execute(){
             //TODO: call the concatenate_by_row() function
