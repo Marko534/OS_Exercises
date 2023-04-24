@@ -41,6 +41,7 @@ class OSMidterm {
         ArrayList<Concatenation> threads = new ArrayList<>();
         for (int i = 0; i < matrix.getM(); i++) {
             threads.add(new Concatenation(matrix.getRow(i)));
+            threads.get(i).start();
         }
 
         for (int i = 0; i < matrix.getM(); i++) {
@@ -77,7 +78,7 @@ class OSMidterm {
         public Concatenation(Object[] line) {
             this.objects = new ArrayList<>(List.of(line));
             this.letters = "";
-            this.start();
+//            this.start();
         }
         //concatenation function implemented on the whole matrix, so you can take a look of the task's logic
 //        public void concatenate() {
