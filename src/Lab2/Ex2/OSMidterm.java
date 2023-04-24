@@ -1,7 +1,6 @@
 package Lab2.Ex2;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,15 +12,15 @@ class OSMidterm {
 
         //STARTING CODE, DON'T MAKE CHANGES
         //-----------------------------------------------------------------------------------------
-        String final_text="Bravo!!! Ja resi zadacata :)";
-        int m=10, n=100;
+        String final_text = "Bravo!!! Ja resi zadacata :)";
+        int m = 10, n = 100;
         Object[][] data = new Object[m][n];
         Random rand = new Random();
-        int k=0;
-        for (int i=0;i<m;i++) {
-            for (int j=0;j<n;j++) {
+        int k = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 int random = rand.nextInt(100);
-                if(random%2==0 & k<final_text.length()) {
+                if (random % 2 == 0 & k < final_text.length()) {
                     data[i][j] = final_text.charAt(k);
                     k++;
                 } else {
@@ -30,7 +29,7 @@ class OSMidterm {
             }
         }
 
-        DataMatrix matrix = new DataMatrix(m,n, data);
+        DataMatrix matrix = new DataMatrix(m, n, data);
         StatisticsResource statisticsResource = new StatisticsResource();
         //-----------------------------------------------------------------------------------------
 
@@ -38,13 +37,23 @@ class OSMidterm {
         //YOU CAN COMMENT OR DELETE IT AFTER YOU WRITE THE CODE USING THREADS
         //-----------------------------------------------------------------------------------------
 //        Concatenation concatenation = new Concatenation(matrix, statisticsResource);
-        ArrayList<Thread> threads = new ArrayList<>();
-        for (int i =0; i< matrix.getM(); i++){
-            threads.add(new Concatenation());
+        StringBuilder mainStrin = new StringBuilder();
+        ArrayList<Concatenation> threads = new ArrayList<>();
+        for (int i = 0; i < matrix.getM(); i++) {
+            threads.add(new Concatenation(matrix.getRow(i)));
+        }
+
+        for (int i = 0; i < matrix.getM(); i++) {
+            try {
+                threads.get(i).join();
+                mainStrin.append(threads.get(i).getLetters());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 //        concatenation.concatenate();
 
-        statisticsResource.printString();
+        System.out.println(mainStrin);
         //-----------------------------------------------------------------------------------------
 
         //TODO: Run the threads from the Concatenation class
@@ -60,10 +69,11 @@ class OSMidterm {
     // TODO: Make the Concatenation Class  a Thread Class
     static class Concatenation extends Thread {
 
-//        private DataMatrix matrix;
+        //        private DataMatrix matrix;
 //        private StatisticsResource statisticsResource;
         private ArrayList<Object> objects;
         private String letters;
+
         public Concatenation(Object[] line) {
             this.objects = new ArrayList<>(List.of(line));
             this.letters = "";
@@ -85,20 +95,24 @@ class OSMidterm {
             this.execute();
         }
 
-        public void concatenate_by_row(){
-
+        public void execute() {
+            for (int i = 0; i < this.objects.size(); i++) {
+                if (this.objects.get(i) instanceof Character) {
+                    this.letters += this.objects.get(i);
+                }
+            }
         }
-        public void execute(){
-            //TODO: call the concatenate_by_row() function
-        }
 
+        public String getLetters() {
+            return letters;
+        }
     }
 
     //-------------------------------------------------------------------------
     //YOU ARE NOT CHANGING THE CODE BELOW
     static class DataMatrix {
 
-        private int m,n;
+        private int m, n;
         private Object[][] data;
 
         public DataMatrix(int m, int n, Object[][] data) {
@@ -129,8 +143,8 @@ class OSMidterm {
 
         public Object[] getColumn(int pos) {
             Object[] result = new Object[m];
-            for (int i=0;i<m;i++) {
-                result[i]=data[i][pos];
+            for (int i = 0; i < m; i++) {
+                result[i] = data[i][pos];
             }
             return result;
         }
@@ -152,7 +166,7 @@ class OSMidterm {
 
         //function for String concatenation
         public void concatenateString(String new_character) {
-            concatenatedString+=new_character;
+            concatenatedString += new_character;
         }
 
         //function for printing the concatenated string
@@ -161,7 +175,6 @@ class OSMidterm {
         }
 
     }
-
 
 
 }
