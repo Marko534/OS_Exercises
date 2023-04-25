@@ -8,7 +8,7 @@ import java.util.Random;
 class OSMidterm {
 
     //TODO: Initialize the semaphores you need
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         //STARTING CODE, DON'T MAKE CHANGES
         //-----------------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ class OSMidterm {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 int random = rand.nextInt(100);
-                if (random % 2 == 0 & k < final_text.length()) {
+                if (random % 15 == 0 & k < final_text.length()) {
                     data[i][j] = final_text.charAt(k);
                     k++;
                 } else {
@@ -44,13 +44,10 @@ class OSMidterm {
             threads.get(i).start();
         }
 
+//        threads.get(matrix.getM()-1).join();
         for (int i = 0; i < matrix.getM(); i++) {
-            try {
-                threads.get(i).join();
-                mainStrin.append(threads.get(i).getLetters());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            threads.get(i).join();
+            mainStrin.append(threads.get(i).getLetters());
         }
 //        concatenation.concatenate();
 
@@ -99,6 +96,7 @@ class OSMidterm {
             for (int i = 0; i < this.objects.size(); i++) {
                 if (this.objects.get(i) instanceof Character) {
                     this.letters += this.objects.get(i);
+                    System.out.println(this.objects.get(i));
                 }
             }
         }
