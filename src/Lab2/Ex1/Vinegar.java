@@ -3,9 +3,17 @@ package Lab2.Ex1;
 import Mid1.Ex1.ThreadExample;
 
 import java.util.HashSet;
+import java.util.concurrent.Semaphore;
 
 
 public class Vinegar {
+
+    static Semaphore needC = new Semaphore(2);
+    static Semaphore needH = new Semaphore(4);
+    static Semaphore needO = new Semaphore(2);
+    static Semaphore hereC = new Semaphore(0);
+    static Semaphore hereH = new Semaphore(0);
+    static Semaphore hereO = new Semaphore(0);
 
 
     public static void main(String[] args) {
