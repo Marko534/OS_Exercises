@@ -78,7 +78,6 @@ class OSMidterm {
         public Concatenation(Object[] line) {
             this.objects = new ArrayList<>(List.of(line));
             this.letters = "";
-//            this.start();
         }
         //concatenation function implemented on the whole matrix, so you can take a look of the task's logic
 //        public void concatenate() {
