@@ -20,6 +20,7 @@ class OSMidterm {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 int random = rand.nextInt(100);
+                //% number the biger the number the more spread out they are
                 if (random % 15 == 0 & k < final_text.length()) {
                     data[i][j] = final_text.charAt(k);
                     k++;
