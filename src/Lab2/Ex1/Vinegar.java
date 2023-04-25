@@ -1,5 +1,7 @@
 package Lab2.Ex1;
 
+import Mid1.Ex1.ThreadExample;
+
 import java.util.HashSet;
 
 
@@ -38,7 +40,7 @@ public class Vinegar {
     }
 
 
-    static class C {
+    static class C extends Thread {
 
 
         public void execute() throws InterruptedException {
@@ -64,7 +66,7 @@ public class Vinegar {
     }
 
 
-    static class H {
+    static class H extends Thread{
 
 
         public void execute() throws InterruptedException {
@@ -90,7 +92,7 @@ public class Vinegar {
     }
 
 
-    static class O {
+    static class O extends Thread{
 
 
         public void execute() throws InterruptedException {
