@@ -7,6 +7,7 @@ import java.util.concurrent.Semaphore;
 
 class Lab2 {
 
+    static ArrayList<Semaphore> semaphores = new ArrayList<>();
     //TODO: Initialize the semaphores you need
     public static void main(String[] args) throws InterruptedException {
 
@@ -40,22 +41,24 @@ class Lab2 {
 //        Concatenation concatenation = new Concatenation(matrix, statisticsResource);
         StringBuilder mainStrin = new StringBuilder();
         ArrayList<Concatenation> threads = new ArrayList<>();
-        ArrayList<Semaphore> semaphores = new ArrayList<>();
+
+        for (int i =0;i < matrix.getM()-1; i++){
+            semaphores.add(new Semaphore(0));
+        }
+        semaphores.add(new Semaphore(1));
+
         for (int i = 0; i < matrix.getM(); i++) {
-            threads.add(new Concatenation(matrix, i);
-            semaphores.add(new Semaphore(1));
+            threads.add(new Concatenation(matrix, statisticsResource ,i));
             threads.get(i).start();
         }
 
-
 //        threads.get(matrix.getM()-1).join();
-        for (int i = 0; i < matrix.getM(); i++) {
-            threads.get(matrix.getM() - i - 1).join();
-            mainStrin.append(threads.get(matrix.getM() - i - 1).getLetters());
+        for (int i = matrix.getM()-1; i >-1; i--) {
+            threads.get( i).join();
         }
 //        concatenation.concatenate();
 
-        System.out.println(mainStrin);
+        statisticsResource.printString();
         //-----------------------------------------------------------------------------------------
 
         //TODO: Run the threads from the Concatenation class
@@ -76,34 +79,40 @@ class Lab2 {
         private int line;
         private StringBuilder letters;
 
-        public Concatenation(DataMatrix matrix, int line) {
+        public Concatenation(DataMatrix matrix, StatisticsResource statisticsResource, int line) {
             this.matrix = matrix;
+            this.statisticsResource = statisticsResource;
+            this.line = line;
             this.letters = new StringBuilder("");
         }
 
         //        concatenation function implemented on the whole matrix, so you can take a look of the task's logic
         public void concatenate() {
-            for (int j = 0; j < this.matrix.getN(); j++) {
+            for (int j = this.matrix.getN()-1; j >-1; j--) {
                 if (this.matrix.isString(line, j)) {
-                    this.statisticsResource.concatenateString(this.matrix.getEl(line, j).toString());
+                    this.letters.append(this.matrix.getEl(line, j).toString());
                 }
             }
         }
 
         @Override
         public void run() {
-            this.execute();
+            try {
+                this.execute();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        public void execute() {
+        public void execute() throws InterruptedException {
             this.concatenate();
-            semafore
-        }
-
-        public String getLetters() {
-            System.out.printf(letters.toString());
-            System.out.printf("\n");
-            return letters.reverse().toString();
+            semaphores.get(this.line).acquire();
+            System.out.printf("\n"+ letters + " "+ line);
+            this.statisticsResource.concatenateString(letters.toString());
+            if(line!=0){
+                semaphores.get(this.line-1).release();
+            }
+            semaphores.get(this.line).release();
         }
     }
 
@@ -174,8 +183,6 @@ class Lab2 {
         }
 
     }
-
-
 }
 
 
